@@ -3,7 +3,8 @@ from dataclasses import dataclass, field
 from typing import Optional
 import uuid
 
-@dataclass(kw_only=True)
+
+@dataclass(kw_only=True, frozen=True)
 class Category:
     id: uuid.UUID = field(default_factory=uuid.uuid4)
     name: str
