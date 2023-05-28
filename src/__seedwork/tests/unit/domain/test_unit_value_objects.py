@@ -51,7 +51,7 @@ class TestValueObjectUnit(unittest.TestCase):
             value1 = 'value1'
 
             vo1 = StubOneProperty(prop=value1)
-            vo1.i   d = 'fake id'
+            vo1.id = 'fake id'
 
 
 class TestUniqueEntityIdUnit(unittest.TestCase):
