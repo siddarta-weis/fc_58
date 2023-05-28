@@ -1,9 +1,57 @@
 import unittest
+from abc import ABC
 import uuid
-from dataclasses import is_dataclass, FrozenInstanceError
+from dataclasses import is_dataclass, FrozenInstanceError, dataclass
 from unittest.mock import patch
-from __seedwork.domain.value_objects import UniqueEntityId
+from __seedwork.domain.value_objects import UniqueEntityId, ValueObject
 from __seedwork.domain.exceptions import InvalidUuidException
+
+
+@dataclass(frozen=True)
+class StubOneProperty(ValueObject):
+    prop: str
+
+
+@dataclass(frozen=True)
+class StubTwoProperty(ValueObject):
+    prop1: str
+    prop2: str
+
+
+class TestValueObjectUnit(unittest.TestCase):
+    def test_if_is_a_dataclass(self):
+        self.assertTrue(is_dataclass(ValueObject))
+
+    def test_if_is_instance_of_abc(self):
+        self.assertIsInstance(ValueObject(), ABC)
+
+    def test_init_prop(self):
+        value = 'value'
+        vo1 = StubOneProperty(value)
+        self.assertEqual(vo1.prop, value)
+
+    def test_init_prop_two_value(self):
+        value1 = 'value1'
+        value2 = 'value2'
+        vo1 = StubTwoProperty(prop1=value1, prop2=value2)
+        self.assertEqual(vo1.prop1, value1)
+        self.assertEqual(vo1.prop2, value2)
+
+    def test_convert_to_str(self):
+        value1 = 'value1'
+        value2 = 'value2'
+        vo1 = StubOneProperty(prop=value1)
+        self.assertEqual(vo1.prop, str(vo1))
+
+        vo2 = StubTwoProperty(prop1=value1, prop2=value2)
+        self.assertEqual('{"prop1": "value1", "prop2": "value2"}', str(vo2))
+
+    def test_if_is_immutable(self):
+        with self.assertRaises(FrozenInstanceError):
+            value1 = 'value1'
+
+            vo1 = StubOneProperty(prop=value1)
+            vo1.i   d = 'fake id'
 
 
 class TestUniqueEntityIdUnit(unittest.TestCase):
@@ -31,7 +79,7 @@ class TestUniqueEntityIdUnit(unittest.TestCase):
             mock_validate.assert_called_once()
             self.assertIsInstance(uuid.UUID(value_object.id), uuid.UUID)
 
-    def test_if_is_imutable(self):
+    def test_if_is_immutable(self):
         with self.assertRaises(FrozenInstanceError):
             value_object = UniqueEntityId()
             value_object.id = 'fake id'
