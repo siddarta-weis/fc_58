@@ -13,3 +13,9 @@ class Category(UniqueEntityId):
 
     def update(self, name: str, description: str):
         return replace(self, name=name, description=description)
+
+    def activate(self):
+        return replace(self, is_active=True)
+
+    def deactivate(self):
+        return replace(self, is_active=False)
