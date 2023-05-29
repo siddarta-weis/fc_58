@@ -36,3 +36,14 @@ class TestCategory(unittest.TestCase):
         self.assertEqual(category.name, "magazine")
         self.assertEqual(category.description, "a math magazine")
 
+    def test_if_is_activated(self):
+        category = Category(name="book", description="a math book", is_active=False)
+        category = category.activate()
+
+        self.assertEqual(category.is_active, True)
+
+    def test_if_is_deactivated(self):
+        category = Category(name="book", description="a math book", is_active=True)
+        category = category.deactivate()
+
+        self.assertEqual(category.is_active, False)
