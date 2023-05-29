@@ -28,3 +28,11 @@ class TestCategory(unittest.TestCase):
         with self.assertRaises(FrozenInstanceError):
             value_object = Category(name='test')
             value_object.name = 'fake id'
+
+    def test_if_update_values(self):
+        category = Category(name="book", description="a math book")
+        category = category.update(name="magazine", description="a math magazine")
+
+        self.assertEqual(category.name, "magazine")
+        self.assertEqual(category.description, "a math magazine")
+
