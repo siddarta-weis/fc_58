@@ -5,7 +5,7 @@ from __seedwork.domain.exceptions import InvalidUuidException
 import uuid
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class ValueObject(ABC):
     def __str__(self) -> str:
         fields_name = [f.name for f in fields(self)]
@@ -14,7 +14,7 @@ class ValueObject(ABC):
         return json.dumps({field_name: getattr(self, field_name) for field_name in fields_name})
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class UniqueEntityId(ValueObject):
     id: str = field(
         default_factory=lambda: str(uuid.uuid4())
