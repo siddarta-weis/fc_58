@@ -1,8 +1,26 @@
 version: "3.9"
 
 services:
+  app-dev:
+    build:
+      context: .
+      args:
+        REQUIREMENTS: "dev-requirements.txt" 
+    profiles:
+      - "dev"
+    hostname: micro-video-dev
+    container_name: micro-videos-dev
+    volumes:
+      - .:/home/python/app
+
   app:
-    build: .
-    container_name: micro-videos-python-app
+    build:
+      context: .
+      args:
+        REQUIREMENTS: "dev-requirements.txt" 
+    profiles:
+      - "prod"
+    hostname: micro-video-dev
+    container_name: micro-videos-dev
     volumes:
       - .:/home/python/app
