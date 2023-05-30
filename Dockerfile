@@ -7,7 +7,6 @@ ARG DEBIAN_FRONTEND=noninteractive
 ARG REQUIREMENTS
 
 RUN useradd -ms /bin/bash python
-USER python
 
 WORKDIR /home/python/app
 
@@ -15,5 +14,7 @@ COPY ./${REQUIREMENTS} ./requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt && \
     rm requirements.txt
+
+USER python
 
 CMD [ "tail", "-f", "/dev/null"]
